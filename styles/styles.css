@@ -17,10 +17,6 @@ input[type="text"] {
   background-color: green;
   color: #ffffff;
 }
-.list-container {
-  margin-top: 4%;
-  position: absolute;
-}
 .loader {
   display: none;
   margin-left: 5px;
