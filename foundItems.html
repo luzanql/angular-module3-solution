@@ -1,0 +1,7 @@
+<ul>
+    <ol ng-repeat="item in items">
+        <span class="item-name">{{ item.short_name }} - {{ item.name }}</span>
+        {{ item.description }}
+        <button class="remove-button" ng-click="onDelete({index: $index});">Remove Item</button>
+    </ol>
+</ul>

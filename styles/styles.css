@@ -5,9 +5,21 @@ input[type="text"] {
   width: 200px;
   float: left;
 }
+
+.item-name {
+  font-weight: bold;
+}
 .narrow-button {
+  margin-left: 1em;
   float: left;
-  margin-left: 10px;
+}
+.remove-button {
+  background-color: green;
+  color: #ffffff;
+}
+.list-container {
+  margin-top: 4%;
+  position: absolute;
 }
 .loader {
   display: none;

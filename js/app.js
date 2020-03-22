@@ -4,6 +4,7 @@
     angular.module('NarrowItDownApp', [])
     .controller('NarrowItDownController', NarrowItDownController)
     .service('MenuSearchService', MenuSearchService)
+    .directive('foundItems',foundItemsDirective)
     .constant('BaseUrl', "https://davids-restaurant.herokuapp.com");
 
     NarrowItDownController.$inject = ['MenuSearchService'];
@@ -11,19 +12,27 @@
         var menu = this;
 
         menu.logMenuItems = function (searchTerm) {
-            var promise = MenuSearchService.getMatchedMenuItems(searchTerm);
-            promise.then(function (response) {
+            if (searchTerm) {
+                var promise = MenuSearchService.getMatchedMenuItems(searchTerm);
+                promise.then(function (response) {
                 menu.menuItems = response;
-            })
-            .catch(function (error) {
-                console.log("Something went terribly wrong.");
-            })
+                })
+                .catch(function (error) {
+                    console.log("Something went terribly wrong.");
+                })
+            }
+        };
+
+        menu.removeItem = function (index) {
+            MenuSearchService.removeItem(index);
         };
     }
 
     MenuSearchService.$inject = ['$http', 'BaseUrl']
     function MenuSearchService($http, BaseUrl) {
         var service = this;
+
+        var foundItems = [];
 
         service.getMatchedMenuItems = function (searchTerm) {
             return $http({
@@ -33,7 +42,7 @@
                     description: searchTerm
                 }
             }).then(function (result){
-                var foundItems = result.data.menu_items.filter(item => {
+                foundItems = result.data.menu_items.filter(item => {
                                             return item.description
                                                 .toString()
                                                 .toLowerCase()
@@ -42,5 +51,21 @@
                 return foundItems;
             });
         }
+
+        service.removeItem = function (itemIndex) {
+            foundItems.splice(itemIndex, 1);
+        }
     }
+
+    function foundItemsDirective() {
+        var ddo = {
+            templateUrl: 'foundItems.html',
+            scope: {
+                items:    '<',
+                onDelete: '&onRemove'
+            }
+        };
+        return ddo;
+    }
+
 })();
